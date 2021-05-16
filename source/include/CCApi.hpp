@@ -4,9 +4,11 @@
 #include <stdexcept>
 #include <vector>
 #include <ctime>
+#include <chrono>
 
 namespace CCApi {
-    constexpr const char* CC_URL = "https://czech-craft.eu/api/{}";
+    constexpr const char *CC_URL = "https://czech-craft.eu/api/{}";
+    constexpr const char *TIME_FORMAT = "%Y-%m-%d %H:%M:%S";
 
     struct Response {
         const int code;
@@ -21,14 +23,14 @@ namespace CCApi {
         const int votes;
     };
 
-    struct VoterInfo  {
+    struct VoterInfo {
         const std::string username;
         const int vote_count;
     };
 
     struct Vote {
         const std::string username;
-        const std::time_t date;
+        const std::tm date;
         const bool delivered;
     };
 
@@ -39,9 +41,14 @@ namespace CCApi {
 
     struct PlayerInfo {
         const std::string username;
-        const std::time_t next_vote;
+        const std::tm next_vote;
         const int vote_count;
         const std::vector<Vote> votes;
+    };
+
+    struct NextVote {
+        const std::string username;
+        const std::tm next_vote;
     };
 
     /**
@@ -111,6 +118,18 @@ namespace CCApi {
     * @returns Server votes from a month
     */
     PlayerInfo userVotes(const std::string &username, const std::string &slug, const int &month, const int &year);
+
+    /**
+    * Retrieves PlayerInfo containing only next vote and username information.
+    *
+    * @param username Username of the player
+    * @param slug Slug name of the server
+    *
+    * @throws std::runtime_error Thrown in case something goes wrong, with detailed message about the error
+    * @returns Server votes from a month
+    */
+    PlayerInfo nextVote(const std::string &username, const std::string &slug);
+
 
 }
 #endif //CC_CLI_CCAPI_HPP
