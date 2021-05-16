@@ -9,6 +9,11 @@ Command line application written in c++ that allows you to interact with [CzechC
 - playervotes - Shows player's votes
 - nextvote - Shows date  when it's going to be possible to vote again
 
+## Dependencies
+- [nlohmann/json](https://github.com/nlohmann/json)
+- [curl](https://curl.se/libcurl/)
+- [fmt](https://github.com/fmtlib/fmt)
+
 ## Building on linux
 ```
 $ mkdir build && cd build
