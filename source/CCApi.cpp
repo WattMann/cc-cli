@@ -54,6 +54,7 @@ CCApi::serverInfo(const std::string &slug) {
                 .slug = json_object["slug"],
                 .votes = json_object["votes"].get<int>()
         };
+        curl_easy_cleanup(handle);
         return info;
     } catch (...) {
         curl_easy_cleanup(handle);
@@ -87,6 +88,7 @@ CCApi::serverVotes(const std::string &slug) {
                 .vote_count = obj["vote_count"].get<int>()
         };
 
+        curl_easy_cleanup(handle);
         return vector;
     } catch (...) {
         curl_easy_cleanup(handle);
@@ -119,7 +121,7 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
                 .votes = votes,
                 .vote_count = obj["vote_count"].get<int>()
         };
-
+        curl_easy_cleanup(handle);
         return vector;
     } catch (...) {
         curl_easy_cleanup(handle);
@@ -142,7 +144,7 @@ CCApi::topVoters(const std::string &slug) {
                     .vote_count = datum["votes"].get<int>()
             });
         }
-
+        curl_easy_cleanup(handle);
         return votes;
     } catch (...) {
         curl_easy_cleanup(handle);
@@ -180,7 +182,7 @@ CCApi::userVotes(const std::string &username, const std::string &slug) {
                 .vote_count = obj["vote_count"].get<int>(),
                 .votes = votes
         };
-
+        curl_easy_cleanup(handle);
         return info;
     } catch (...) {
         curl_easy_cleanup(handle);
@@ -213,7 +215,7 @@ CCApi::userVotes(const std::string &username, const std::string &slug, const int
                 .vote_count = obj["vote_count"].get<int>(),
                 .votes = votes
         };
-
+        curl_easy_cleanup(handle);
         return info;
     } catch (...) {
         curl_easy_cleanup(handle);
@@ -236,6 +238,7 @@ CCApi::nextVote(const std::string &username, const std::string &slug) {
                 .username = obj["username"],
                 .next_vote = tm
         };
+        curl_easy_cleanup(handle);
         return info;
     } catch (...) {
         curl_easy_cleanup(handle);
