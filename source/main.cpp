@@ -7,10 +7,10 @@ void displayHelp() {
                "Arguments:\n"
                "\thelp - Displays this dialog.\n"
                "\tinfo [server slug] - Displays the server information.\n"
-               "\tvotes [server slug] (count) - Displays last 100 voters, if count is specified count it's used instead.\n"
+               "\tvotes [server slug] (count) - Displays last 100 voters, if count is specified it's used instead.\n"
                "\ttopvoters [server slug] (count) - Displays top 5 voters, if count is specified it's used instead.\n"
                "\tplayervotes [username] [serverslug] (count) - Displays player's votes for specified server, 10 of them, unless count is specified.\n"
-               "\tnextvote [username] [server slug] - Displays date and time when it's possible for specified player to vote again.\n"
+               "\tnextvote [username] [server slug] - Displays date and time when it's gonna be possible for specified player to vote again.\n"
     );
 }
 
