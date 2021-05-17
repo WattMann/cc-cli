@@ -1,5 +1,5 @@
-#include <fmt/format.h>
 #include "CCApi.hpp"
+#include <fmt/format.h>
 #include <chrono>
 
 void displayHelp() {

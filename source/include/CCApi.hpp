@@ -10,11 +10,6 @@ namespace CCApi {
     constexpr const char *CC_URL = "https://czech-craft.eu/api/{}";
     constexpr const char *TIME_FORMAT = "%Y-%m-%d %H:%M:%S";
 
-    struct Response {
-        const int code;
-        const std::string message;
-    };
-
     struct ServerInfo {
         const std::string address;
         const std::string name;
@@ -44,11 +39,6 @@ namespace CCApi {
         const std::tm next_vote;
         const int vote_count;
         const std::vector<Vote> votes;
-    };
-
-    struct NextVote {
-        const std::string username;
-        const std::tm next_vote;
     };
 
     /**
