@@ -1,5 +1,6 @@
 
 # CzechCraft CLI
+<b>This an an unofficial application. I am not associated with CzechCraft at all.</b><br><br>
 Command line application written in c++ that allows you to interact with the [CzechCraft](https://czech-craft.eu) API.<br>
 Tested on linux `5.11.0-17`, compiled with `GNU GCC 10.3.0`.
 
