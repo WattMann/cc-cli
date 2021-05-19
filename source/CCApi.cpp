@@ -45,7 +45,7 @@ CCApi::serverInfo(const std::string &slug) {
     auto handle = common_curl_init(fmt::format("server/{}", slug), response);
     try {
         common_curl_preform(handle);
-
+        
         auto json_object = nlohmann::json::parse(response);
         ServerInfo info{
                 .address = json_object["address"],
@@ -54,6 +54,7 @@ CCApi::serverInfo(const std::string &slug) {
                 .slug = json_object["slug"],
                 .votes = json_object["votes"].get<int>()
         };
+
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {
@@ -68,7 +69,7 @@ CCApi::serverVotes(const std::string &slug) {
     auto handle = common_curl_init(fmt::format("server/{}/votes", slug), response);;
     try {
         common_curl_preform(handle);
-        std::vector<Vote> votes;
+        std::list<Vote> votes;
 
         auto obj = nlohmann::json::parse(response);
         auto data = obj["data"];
@@ -83,7 +84,7 @@ CCApi::serverVotes(const std::string &slug) {
             });
         }
 
-        VoteVector vector{
+        VoteVector vector {
                 .votes = votes,
                 .vote_count = obj["vote_count"].get<int>()
         };
@@ -102,7 +103,7 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
     auto handle = common_curl_init(fmt::format("server/{}/votes/{}/{}", slug, year, month), response);;
     try {
         common_curl_preform(handle);
-        std::vector<Vote> votes;
+        std::list<Vote> votes;
 
         auto obj = nlohmann::json::parse(response);
         auto data = obj["data"];
@@ -110,7 +111,7 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
             std::tm tm{};
             strptime(datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, &tm);
 
-            votes.emplace_back(Vote{
+            votes.push_front(Vote{
                     .username = datum["username"],
                     .date = tm,
                     .delivered = datum["delivered"].get<bool>(),
@@ -121,6 +122,7 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
                 .votes = votes,
                 .vote_count = obj["vote_count"].get<int>()
         };
+
         curl_easy_cleanup(handle);
         return vector;
     } catch (...) {
@@ -129,17 +131,17 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
     }
 }
 
-std::vector<VoterInfo>
+std::list<VoterInfo>
 CCApi::topVoters(const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}/voters", slug), response);;
     try {
         common_curl_preform(handle);
-        std::vector<VoterInfo> votes;
+        std::list<VoterInfo> votes;
 
         auto data = nlohmann::json::parse(response)["data"];
         for (const auto &datum : data) {
-            votes.emplace_back(VoterInfo{
+            votes.push_front(VoterInfo{
                     .username = datum["username"],
                     .vote_count = datum["votes"].get<int>()
             });
@@ -158,8 +160,7 @@ CCApi::userVotes(const std::string &username, const std::string &slug) {
     auto handle = common_curl_init(fmt::format("server/{}/player/{}", slug, username), response);;
     try {
         common_curl_preform(handle);
-        std::vector<Vote> votes;
-
+        std::list<Vote> votes;
 
         auto obj = nlohmann::json::parse(response);
         auto data = obj["data"];
@@ -167,21 +168,22 @@ CCApi::userVotes(const std::string &username, const std::string &slug) {
         for (const auto &datum : data) {
             std::tm tm{};
             strptime(datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, &tm);
-            votes.emplace_back(Vote{
+            votes.push_front(Vote{
                     .username = datum["username"],
                     .date = tm,
                     .delivered = datum["delivered"].get<bool>()
             });
         }
 
-        std::tm tm{};
+        std::tm tm {};
         strptime(obj["next_vote"].get<std::string>().c_str(), TIME_FORMAT, &tm);
-        PlayerInfo info{
+        PlayerInfo info {
                 .username = obj["username"],
                 .next_vote = tm,
                 .vote_count = obj["vote_count"].get<int>(),
                 .votes = votes
         };
+        
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {
@@ -196,7 +198,7 @@ CCApi::userVotes(const std::string &username, const std::string &slug, const int
     auto handle = common_curl_init(fmt::format("server/{}/player/{}/{}/{}", slug, username, year, month), response);
     try {
         common_curl_preform(handle);
-        std::vector<Vote> votes;
+        std::list<Vote> votes;
 
         auto obj = nlohmann::json::parse(response);
         auto data = obj["data"];
@@ -204,17 +206,19 @@ CCApi::userVotes(const std::string &username, const std::string &slug, const int
         for (const auto &datum : data) {
             std::tm tm{};
             strptime(datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, &tm);
-            votes.emplace_back(Vote{
+            votes.push_front( Vote {
                     .username = datum["username"],
                     .date = tm,
                     .delivered = datum["delivered"].get<bool>()
             });
         }
-        PlayerInfo info{
+
+        PlayerInfo info {
                 .username = username,
                 .vote_count = obj["vote_count"].get<int>(),
                 .votes = votes
         };
+
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {
@@ -234,7 +238,7 @@ CCApi::nextVote(const std::string &username, const std::string &slug) {
         std::tm tm {};
         strptime(obj["next_vote"].get<std::string>().c_str(), TIME_FORMAT, &tm);
 
-        PlayerInfo info{
+        PlayerInfo info {
                 .username = obj["username"],
                 .next_vote = tm
         };

@@ -50,13 +50,15 @@ int main(int argc, char **argv) {
                 size = votevector.votes.size();
 
             char buffer[32] = {0};
-
-            for (int i = 0; i < size; ++i) {
-                auto ctx = votevector.votes.at(i);
-                std::strftime(buffer, 32, CCApi::TIME_FORMAT, &ctx.date);
-                fmt::print("[{}] - {} - {}\n", std::string(buffer), ctx.username,
-                           ctx.delivered ? "delivered" : "not delivered");
+            int index = 0;
+            for (const auto &item : votevector.votes) {
+                if(index++ >= size)
+                    break;
+                std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
+                fmt::print("[{}] - {} - {}\n", std::string(buffer), item.username,
+                           item.delivered ? "delivered" : "not delivered");
             }
+
             return 0;
         }
         if (strcmp(argv[1], "topvoters") == 0) {
@@ -71,17 +73,21 @@ int main(int argc, char **argv) {
                 size = std::stoi(argv[3]);
 
             fmt::print("Working...\n");
-
             auto data = CCApi::topVoters(argv[2]);
 
             if (size == -1 || size > data.size())
                 size = data.size();
-            fmt::print("Displaying: {}\n", size);
 
-            for (int i = 0; i < size; ++i) {
-                auto ctx = data.at(i);
-                fmt::print("[{}] - {}, votes: {}\n", i + 1, ctx.username, ctx.vote_count);
+            fmt::print("Displaying: {}\n", size);
+            int place = 1;
+
+            int index = 0;
+            for (const auto &item : data) {
+                if(index++ >= size)
+                    break;
+                fmt::print("[{}] - {}, votes: {}\n", place++, item.username, item.vote_count);
             }
+
             return 0;
         }
         if (strcmp(argv[1], "playervotes") == 0) {
@@ -107,11 +113,14 @@ int main(int argc, char **argv) {
                        "Next vote: {}\n"
                        "Votes:\n", profile.username, profile.vote_count, std::string(buffer));
 
-            for (int i = 0; i < size; ++i) {
-                auto ctx = profile.votes.at(i);
-                std::strftime(buffer, 32, CCApi::TIME_FORMAT, &ctx.date);
-                fmt::print("\t[{}] - {}\n", std::string(buffer), ctx.delivered ? "delivered" : "not delivered");
+            int index = 0;
+            for (const auto &item : profile.votes) {
+                if(index++ >= size)
+                    break;
+                std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
+                fmt::print("\t[{}] - {}\n", std::string(buffer), item.delivered ? "delivered" : "not delivered");
             }
+
             return 0;
         }
 

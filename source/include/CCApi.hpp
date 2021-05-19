@@ -2,7 +2,7 @@
 #define CC_CLI_CCAPI_HPP
 
 #include <stdexcept>
-#include <vector>
+#include <list>
 #include <ctime>
 #include <chrono>
 
@@ -30,7 +30,7 @@ namespace CCApi {
     };
 
     struct VoteVector {
-        std::vector<Vote> votes;
+        std::list<Vote> votes;
         const int vote_count;
     };
 
@@ -38,7 +38,7 @@ namespace CCApi {
         const std::string username;
         const std::tm next_vote;
         const int vote_count;
-        const std::vector<Vote> votes;
+        const std::list<Vote> votes;
     };
 
     /**
@@ -83,7 +83,7 @@ namespace CCApi {
     * @throws std::runtime_error Thrown in case something goes wrong, with detailed message about the error
     * @returns Top voters profiles
     */
-    std::vector<VoterInfo> topVoters(const std::string &slug);
+    std::list<VoterInfo> topVoters(const std::string &slug);
 
     /**
     * Retrieves all user votes.
