@@ -16,14 +16,15 @@ Command line application written in c++ that allows you to interact with [CzechC
 
 ## Building on linux
 ```
-$ mkdir build && cd build
-$ cmake ../.
-$ make
+$ mkdir build &&cd build
+$ cmake --configure ../.
+$ cmake --build .
+$ cmake --install . --prefix "$HOME/.local/bin"
 ```
 
 ## Examples
 ```
-$ ./cc-cli
+$ cc-cli
 Usage: cc-cli [REQUIRED] (OPTIONAL) <GREEDY>
 Arguments:
 	help - Displays this dialog.
@@ -35,7 +36,7 @@ Arguments:
 ```
 
 ```
-$ ./cc-cli playervotes WattMann warfaremc
+$ cc-cli playervotes WattMann warfaremc
 Working...
 Displaying: 1
 Username: WattMann

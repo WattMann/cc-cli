@@ -21,3 +21,6 @@ target_include_directories(cc-cli PRIVATE source/include)
 
 target_link_libraries(cc-cli PRIVATE curl)
 target_link_libraries(cc-cli PRIVATE fmt)
+
+install(TARGETS cc-cli DESTINATION bin)
+
