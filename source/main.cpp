@@ -1,16 +1,19 @@
-#include "CCApi.hpp"
+#include "api/CCApi.hpp"
+#include "Version.h"
 #include <fmt/format.h>
 #include <chrono>
 
 void displayHelp() {
-    fmt::print("Usage: cc-cli [COMMAND] [REQUIRED PARAM] (OPTIONAL PARAM=DEF VAL)\n"
+    fmt::print( "CzechCraft CLI version {}.{}\n"
+               "Usage: cc-cli [COMMAND] [REQUIRED PARAM] (OPTIONAL PARAM=DEF VAL)\n"
                "Commands:\n"
                "\thelp - Displays this dialog.\n"
                "\tinfo [slug] - Displays the server information.\n"
                "\tvotes [slug] (limit=100) - Lists votes.\n"
                "\ttopvoters [slug] (limit=5) - Lists the top voters.\n"
                "\tplayervotes [username] [slug] (limit=10) - Lists player's votes.\n"
-               "\tnextvote [username] [slug] - Displays the date when it's going to be possible to vote again.\n"
+               "\tnextvote [username] [slug] - Displays the date when it's going to be possible to vote again.\n",
+                CC_CLI_VERSION_MAJOR, CC_CLI_VERSION_MINOR
     );
 }
 

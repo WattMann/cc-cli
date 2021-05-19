@@ -1,5 +1,4 @@
-#ifndef CC_CLI_CCAPI_HPP
-#define CC_CLI_CCAPI_HPP
+#pragma once
 
 #include <stdexcept>
 #include <list>
@@ -7,6 +6,7 @@
 #include <chrono>
 
 namespace CCApi {
+
     constexpr const char *CC_URL = "https://czech-craft.eu/api/{}";
     constexpr const char *TIME_FORMAT = "%Y-%m-%d %H:%M:%S";
 
@@ -119,7 +119,4 @@ namespace CCApi {
     * @returns Server votes from a month
     */
     PlayerInfo nextVote(const std::string &username, const std::string &slug);
-
-
 }
-#endif //CC_CLI_CCAPI_HPP

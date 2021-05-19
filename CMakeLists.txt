@@ -1,20 +1,13 @@
 cmake_minimum_required(VERSION 3.19)
+project(cc-cli)
+set (CC_CLI_VERSION_MAJOR 1)
+set (CC_CLI_VERSION_MINOR 0 )
 
-project(cc-cli VERSION 1.0 LANGUAGES CXX)
+configure_file(${PROJECT_SOURCE_DIR}/source/Version.h.in ${PROJECT_SOURCE_DIR}/source/Version.h)
+include_directories(cc-cli "${PROJECT_BINARY_DIR}")
 
-add_executable(cc-cli source/main.cpp source/include/CCApi.hpp source/CCApi.cpp)
-
-string(
-        APPEND _options
-        "$<IF:$<CXX_COMPILER_ID:MSVC>,"
-            "/W4;$<$<CONFIG:RELEASE>:/O2>,"
-            "-Wall;-Wextra;-Werror;"
-                "$<$<CONFIG:RELEASE>:-O3>"
-                "$<$<CXX_COMPILER_ID:Clang>:-stdlib=libc++>"
-        ">"
-)
-
-add_compile_options("${_options}")
+add_executable(cc-cli source/main.cpp source/api/CCApi.cpp source/Version.h source/api/CCApi.hpp)
+add_compile_options("-Wall -Wextra -Werror -pedantic")
 
 set_target_properties(cc-cli PROPERTIES CMAKE_CXX_STANDARD 17)
 target_include_directories(cc-cli PRIVATE source/include)
