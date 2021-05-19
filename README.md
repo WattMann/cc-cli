@@ -1,13 +1,19 @@
 
 # cc-cli
-Command line application written in c++ that allows you to interact with [CzechCraft](https://czech-craft.eu) API.
+Command line application written in c++ that allows you to interact with the [CzechCraft](https://czech-craft.eu) API.
 
-## Commands
-- info - Shows server info
-- votes - Shows server's votes
-- topvoters - Shows server's top voters
-- playervotes - Shows player's votes
-- nextvote - Shows date  when it's going to be possible to vote again
+
+## Usage
+```
+Usage: cc-cli [COMMAND] [REQUIRED PARAM] (OPTIONAL PARAM=DEF VAL)
+Commands:
+	help - Displays this dialog.
+	info [slug] - Displays the server information.
+	votes [slug] (limit=100) - Lists votes.
+	topvoters [slug] (limit=5) - Lists the top voters.
+	playervotes [username] [slug] (limit=10) - Lists player's votes.
+	nextvote [username] [slug] - Displays the date when it's going to be possible to vote again.
+```
 
 ## Dependencies
 - [nlohmann/json](https://github.com/nlohmann/json)
@@ -24,18 +30,17 @@ $ cmake --install . --prefix "$HOME/.local"
 
 ## Examples
 ```
-$ cc-cli
-Usage: cc-cli [REQUIRED] (OPTIONAL) <GREEDY>
-Arguments:
-	help - Displays this dialog.
-	info [server slug] - Displays the server information.
-	votes [server slug] (count) - Displays last 100 voters, if count is specified it's used instead.
-	topvoters [server slug] (count) - Displays top 5 voters, if count is specified it's used instead.
-	playervotes [username] [serverslug] (count) - Displays player's votes for specified server, 10 of them, unless count is specified.
-	nextvote [username] [server slug] - Displays date and time when it's gonna possible for specified player to vote again.
+$ cc-cli topvoters warfaremc
+Working...
+Displaying: 5
+[1] - Name, votes: 86
+[2] - DeadOne, votes: 86
+[3] - OIrange, votes: 89
+[4] - Henten, votes: 91
+[5] - Lulw, votes: 92
+```
 ```
 
-```
 $ cc-cli playervotes WattMann warfaremc
 Working...
 Displaying: 1
