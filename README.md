@@ -1,3 +1,5 @@
+![Latest tag](https://img.shields.io/github/v/tag/WattMann/cc-cli)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 # CzechCraft CLI
 <b>This an an unofficial application. I am not associated with CzechCraft at all.</b><br><br>
@@ -52,3 +54,4 @@ Next vote: 2021-05-11 19:03:44
 Votes:
 	[2021-05-11 17:03:44] - delivered
 ```
+
