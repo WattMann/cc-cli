@@ -3,14 +3,14 @@
 #include <chrono>
 
 void displayHelp() {
-    fmt::print("Usage: cc-cli [REQUIRED] (OPTIONAL) <GREEDY>\n"
-               "Arguments:\n"
+    fmt::print("Usage: cc-cli [COMMAND] [REQUIRED PARAM] (OPTIONAL PARAM=DEF VAL)\n"
+               "Commands:\n"
                "\thelp - Displays this dialog.\n"
-               "\tinfo [server slug] - Displays the server information.\n"
-               "\tvotes [server slug] (count) - Displays last 100 voters, if count is specified it's used instead.\n"
-               "\ttopvoters [server slug] (count) - Displays top 5 voters, if count is specified it's used instead.\n"
-               "\tplayervotes [username] [serverslug] (count) - Displays player's votes for specified server, 10 of them, unless count is specified.\n"
-               "\tnextvote [username] [server slug] - Displays date and time when it's gonna be possible for specified player to vote again.\n"
+               "\tinfo [slug] - Displays the server information.\n"
+               "\tvotes [slug] (limit=100) - Lists votes.\n"
+               "\ttopvoters [slug] (limit=5) - Lists the top voters.\n"
+               "\tplayervotes [username] [slug] (limit=10) - Lists player's votes.\n"
+               "\tnextvote [username] [slug] - Displays the date when it's going to be possible to vote again.\n"
     );
 }
 
