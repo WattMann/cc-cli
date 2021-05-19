@@ -19,7 +19,7 @@ Command line application written in c++ that allows you to interact with [CzechC
 $ mkdir build &&cd build
 $ cmake --configure ../.
 $ cmake --build .
-$ cmake --install . --prefix "$HOME/.local/bin"
+$ cmake --install . --prefix "$HOME/.local"
 ```
 
 ## Examples
