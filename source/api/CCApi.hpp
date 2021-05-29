@@ -1,9 +1,15 @@
 #pragma once
 
+#include <cstdio>
+#include <chrono>
 #include <stdexcept>
 #include <list>
 #include <ctime>
-#include <chrono>
+
+
+#include <nlohmann/json.hpp>
+#include <fmt/format.h>
+#include <curl/curl.h>
 
 namespace CCApi {
 
