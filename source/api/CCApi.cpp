@@ -1,13 +1,15 @@
 #include "CCApi.hpp"
 
-#include <fmt/format.h>
-#include <curl/curl.h>
-#include <nlohmann/json.hpp>
-#include <chrono>
 
 using namespace CCApi;
 
-size_t writer(void *ptr, size_t size, size_t nmemb, std::string *data) {
+void parse_time(char* str, const char* format, std::tm& tm) 
+{
+    sscanf(str, format, &tm.tm_year, &tm.tm_mon, &tm.tm_mday, &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+}
+
+size_t writer(void *ptr, size_t size, size_t nmemb, std::string *data) 
+{
     data->append((char *) ptr, size * nmemb);
     return size * nmemb;
 }
@@ -48,11 +50,11 @@ CCApi::serverInfo(const std::string &slug) {
         
         auto json_object = nlohmann::json::parse(response);
         ServerInfo info{
-                .address = json_object["address"],
-                .name = json_object["name"],
-                .position = json_object["position"].get<int>(),
-                .slug = json_object["slug"],
-                .votes = json_object["votes"].get<int>()
+                json_object["address"],
+                json_object["name"],
+                json_object["position"].get<int>(),
+                json_object["slug"],
+                json_object["votes"].get<int>()
         };
 
         curl_easy_cleanup(handle);
@@ -74,19 +76,15 @@ CCApi::serverVotes(const std::string &slug) {
         auto obj = nlohmann::json::parse(response);
         auto data = obj["data"];
         for (const auto &datum : data) {
-            std::tm tm{};
-            strptime(datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, &tm);
+            std::tm tm;
+            parse_time((char*)datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, tm);
 
-            votes.emplace_back(Vote{
-                    .username = datum["username"],
-                    .date = tm,
-                    .delivered = datum["delivered"].get<bool>(),
-            });
+            votes.emplace_back(Vote{datum["username"], tm, datum["delivered"].get<bool>()});
         }
 
         VoteVector vector {
-                .votes = votes,
-                .vote_count = obj["vote_count"].get<int>()
+                votes,
+                obj["vote_count"].get<int>()
         };
 
         curl_easy_cleanup(handle);
@@ -109,18 +107,18 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
         auto data = obj["data"];
         for (const auto &datum : data) {
             std::tm tm{};
-            strptime(datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, &tm);
+            parse_time((char*)datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, tm);
 
             votes.push_front(Vote{
-                    .username = datum["username"],
-                    .date = tm,
-                    .delivered = datum["delivered"].get<bool>(),
+                    datum["username"],
+                    tm,
+                    datum["delivered"].get<bool>(),
             });
         }
 
         VoteVector vector{
-                .votes = votes,
-                .vote_count = obj["vote_count"].get<int>()
+                votes,
+                obj["vote_count"].get<int>()
         };
 
         curl_easy_cleanup(handle);
@@ -142,8 +140,8 @@ CCApi::topVoters(const std::string &slug) {
         auto data = nlohmann::json::parse(response)["data"];
         for (const auto &datum : data) {
             votes.push_back(VoterInfo{
-                    .username = datum["username"],
-                    .vote_count = datum["votes"].get<int>()
+                    datum["username"],
+                    datum["votes"].get<int>()
             });
         }
         curl_easy_cleanup(handle);
@@ -167,21 +165,21 @@ CCApi::userVotes(const std::string &username, const std::string &slug) {
 
         for (const auto &datum : data) {
             std::tm tm{};
-            strptime(datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, &tm);
+            parse_time((char*) datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, tm);
             votes.push_front(Vote{
-                    .username = datum["username"],
-                    .date = tm,
-                    .delivered = datum["delivered"].get<bool>()
+                    datum["username"],
+                    tm,
+                    datum["delivered"].get<bool>()
             });
         }
 
         std::tm tm {};
-        strptime(obj["next_vote"].get<std::string>().c_str(), TIME_FORMAT, &tm);
+        parse_time((char*)obj["next_vote"].get<std::string>().c_str(), TIME_FORMAT, tm);
         PlayerInfo info {
-                .username = obj["username"],
-                .next_vote = tm,
-                .vote_count = obj["vote_count"].get<int>(),
-                .votes = votes
+                obj["username"],
+                tm,
+                obj["vote_count"].get<int>(),
+                votes
         };
         
         curl_easy_cleanup(handle);
@@ -205,18 +203,19 @@ CCApi::userVotes(const std::string &username, const std::string &slug, const int
 
         for (const auto &datum : data) {
             std::tm tm{};
-            strptime(datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, &tm);
-            votes.push_front( Vote {
-                    .username = datum["username"],
-                    .date = tm,
-                    .delivered = datum["delivered"].get<bool>()
+            parse_time((char*)datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, tm);
+            votes.push_front(Vote{
+                    datum["username"],
+                    tm,
+                    datum["delivered"].get<bool>()
             });
         }
 
         PlayerInfo info {
-                .username = username,
-                .vote_count = obj["vote_count"].get<int>(),
-                .votes = votes
+                username,
+                std::tm{},
+                obj["vote_count"].get<int>(),
+                votes
         };
 
         curl_easy_cleanup(handle);
@@ -236,11 +235,11 @@ CCApi::nextVote(const std::string &username, const std::string &slug) {
 
         auto obj = nlohmann::json::parse(response);
         std::tm tm {};
-        strptime(obj["next_vote"].get<std::string>().c_str(), TIME_FORMAT, &tm);
+        parse_time((char*)obj["next_vote"].get<std::string>().c_str(), TIME_FORMAT, tm);
 
         PlayerInfo info {
-                .username = obj["username"],
-                .next_vote = tm
+                obj["username"],
+                tm
         };
         curl_easy_cleanup(handle);
         return info;

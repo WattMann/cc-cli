@@ -20,6 +20,7 @@ Commands:
 ```
 
 ## Dependencies
+Dependencies are handled with conan.
 - [nlohmann/json](https://github.com/nlohmann/json)
 - [curl](https://curl.se/libcurl/)
 - [fmt](https://github.com/fmtlib/fmt)
@@ -31,6 +32,14 @@ $ cmake --configure ../.
 $ cmake --build .
 $ cmake --install . --prefix "$HOME/.local"
 ```
+
+## Building on windows
+```
+$ mkdir build && cd build
+$ cmake .. -DCMAKE_BUILD_TYPE=<Release/Debug>
+$ cmake --build .
+```
+
 
 ## Examples
 ```
