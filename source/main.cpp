@@ -1,5 +1,5 @@
 #include "api/CCApi.hpp"
-#include "Version.h"
+#include "Version.hpp"
 #include <fmt/format.h>
 #include <chrono>
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv) {
                 if(index++ >= size)
                     break;
                 std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
-                fmt::print("\t[{}] - {}\n", std::string(buffer), item.delivered ? "delivered" : "not delivered");
+                fmt::print("[{}] - {}\n", std::string(buffer), item.delivered ? "delivered" : "not delivered");
             }
 
             return 0;
@@ -145,7 +145,6 @@ int main(int argc, char **argv) {
 
         fmt::print("Unrecognized command\n");
         displayHelp();
-
     }
     return 0;
 }

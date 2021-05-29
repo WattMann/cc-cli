@@ -141,7 +141,7 @@ CCApi::topVoters(const std::string &slug) {
 
         auto data = nlohmann::json::parse(response)["data"];
         for (const auto &datum : data) {
-            votes.push_front(VoterInfo{
+            votes.push_back(VoterInfo{
                     .username = datum["username"],
                     .vote_count = datum["votes"].get<int>()
             });
