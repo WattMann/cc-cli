@@ -13,7 +13,7 @@ Usage: cc-cli <command> [arguments]
 Commands:
  info                       display server information
  votes                      display server or user votes
- top  | topvoters            display server top voters
+ top  | topvoters           display server top voters
  next | nextvote            display next vote date
 Arguments:
  -h, --help                 display overall help or command specific help
