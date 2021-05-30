@@ -1,15 +1,28 @@
 #include "CCApi.hpp"
 
+#include <ctime>
+#include <iomanip>
+#include <sstream>
 
 using namespace CCApi;
 
-void parse_time(char* str, const char* format, std::tm& tm) 
-{
-    sscanf(str, format, &tm.tm_year, &tm.tm_mon, &tm.tm_mday, &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+extern "C" char* strptime(const char* s,
+                          const char* f,
+                          struct tm* tm) {
+    std::istringstream input(s);
+    input.imbue(std::locale(setlocale(LC_ALL, nullptr)));
+    input >> std::get_time(tm, f);
+    if (input.fail()) {
+        return nullptr;
+    }
+    return (char*)(s + input.tellg());
 }
 
-size_t writer(void *ptr, size_t size, size_t nmemb, std::string *data) 
-{
+void parse_time(char* str, const char* format, std::tm& tm){
+    strptime(str, format, &tm);
+}
+
+size_t writer(void *ptr, size_t size, size_t nmemb, std::string *data){
     data->append((char *) ptr, size * nmemb);
     return size * nmemb;
 }
@@ -78,7 +91,7 @@ CCApi::serverVotes(const std::string &slug) {
         auto obj = nlohmann::json::parse(response);
         auto data = obj["data"];
         for (const auto &datum : data) {
-            std::tm tm;
+            std::tm tm {};
             parse_time((char*)datum["datetime"].get<std::string>().c_str(), TIME_FORMAT, tm);
 
             votes.emplace_back(Vote{datum["username"], tm, datum["delivered"].get<bool>()});
