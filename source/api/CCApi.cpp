@@ -1,6 +1,6 @@
 #include "CCApi.hpp"
 
-#include <time.h>
+#include <ctime>
 #include <iomanip>
 #include <sstream>
 
