@@ -17,6 +17,7 @@ size_t writer(void *ptr, size_t size, size_t nmemb, std::string *data)
 [[nodiscard]]
 CURL *
 common_curl_init(const std::string &context, std::string &response) {
+	 curl_global_init(CURL_GLOBAL_WIN32);
     auto handle = curl_easy_init();
     if (!handle)
         throw std::runtime_error("Failed to initialize CURL handle");
@@ -45,10 +46,11 @@ ServerInfo
 CCApi::serverInfo(const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}", slug), response);
+  	printf("%ud\n", handle);
     try {
         common_curl_preform(handle);
-        
         auto json_object = nlohmann::json::parse(response);
+        
         ServerInfo info{
                 json_object["address"],
                 json_object["name"],
@@ -56,7 +58,7 @@ CCApi::serverInfo(const std::string &slug) {
                 json_object["slug"],
                 json_object["votes"].get<int>()
         };
-
+        printf("obj done\n");
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {
