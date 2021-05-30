@@ -9,7 +9,7 @@ void displayHelp() {
                "Commands:\n"
                " info                       display server information\n"
                " votes                      display server or user votes\n"
-               " top | topvoters            display server top voters\n"
+               " top  | topvoters            display server top voters\n"
                " next | nextvote            display next vote date\n"
                "Arguments:\n"
                " -h, --help                 display overall help or command specific help\n"
@@ -20,6 +20,7 @@ void displayHelp() {
                CC_CLI_VERSION_MAJOR, CC_CLI_VERSION_MINOR
     );
 }
+
 //  1    2     3   4
 // exec arg0 arg1 args2
 int main(int argc, char **argv) {
@@ -130,16 +131,14 @@ int main(int argc, char **argv) {
                 if(params.limit > voteinfo.votes.size())
                     params.limit = voteinfo.votes.size();
 
-                fmt::print("Displaying: {}\n", params.limit);
-
                 char buffer[32] = {0};
                 int index = 0;
                 for (const auto &item : voteinfo.votes) {
                     if(index++ >= params.limit)
                         break;
                     std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
-                    fmt::print("[{}] - {} - {}\n", std::string(buffer), item.username,
-                               item.delivered ? "delivered" : "not delivered");
+                    fmt::print(" |{}| {} - {}\n", std::string(buffer), item.username,
+                               item.delivered ? "Delivered" : "Not delivered");
                 }
                 return 0;
             } else { // player votes
@@ -154,21 +153,18 @@ int main(int argc, char **argv) {
                     return 0;
                 }
 
-                fmt::print("Displaying: {}\n", params.limit);
-
                 char buffer[32] = {0};
                 std::strftime(buffer, 32, CCApi::TIME_FORMAT, &profile.next_vote);
-                fmt::print("Username: {}\n"
-                           "Vote count: {}\n"
+                fmt::print("Vote count: {}\n"
                            "Next vote: {}\n"
-                           "Votes:\n", profile.username, profile.vote_count, std::string(buffer));
+                           "Votes:\n", profile.vote_count, std::string(buffer));
 
                 int index = 0;
                 for (const auto &item : profile.votes) {
                     if(index++ >= params.limit)
                         break;
                     std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
-                    fmt::print("[{}] - {}\n", std::string(buffer), item.delivered ? "delivered" : "not delivered");
+                    fmt::print(" |{}| - {}\n", std::string(buffer), item.delivered ? "Delivered" : "Not delivered");
                 }
             }
             return 0;
@@ -188,13 +184,11 @@ int main(int argc, char **argv) {
                 if(params.limit > topvoters.size())
                     params.limit = topvoters.size();
 
-                fmt::print("Displaying: {}\n", params.limit);
-
                 int index = 0;
                 for (const auto &item : topvoters) {
                     if(++index > params.limit)
                         break;
-                    fmt::print("[{}] - {}, votes: {}\n", index, item.username, item.vote_count); //note index fucked prob
+                    fmt::print(" {}. {}, votes: {}\n", index, item.username, item.vote_count); //note index fucked prob
                 }
             }
             return 0;
@@ -205,10 +199,9 @@ int main(int argc, char **argv) {
                 fmt::print("Required parameters: slug, username\n");
             else {
                 auto info = CCApi::nextVote(params.username, params.slug);
-                fmt::print("{}\n", info.next_vote.tm_year);
                 char buffer[32] = {0};
                 std::strftime(buffer, 32, CCApi::TIME_FORMAT, &info.next_vote);
-                fmt::print("Username: {}\nNext vote: {}\n", info.username, std::string(buffer));
+                fmt::print("Next vote: {}\n", std::string(buffer));
             }
             return 0;
         }

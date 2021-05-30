@@ -38,16 +38,19 @@ link_libraries(fmt::fmt CURL::CURL nlohmann_json::nlohmann_json)
 configure_file(${PROJECT_SOURCE_DIR}/source/Version.hpp.in ${PROJECT_SOURCE_DIR}/source/Version.hpp)
 include_directories(cc-cli "${PROJECT_BINARY_DIR}")
 
-add_executable(cc-cli source/main.cpp 
-					  source/api/CCApi.cpp 
-					  source/Version.hpp 
+add_executable(cc-cli source/main.cpp
+					  source/api/CCApi.cpp
+					  source/Version.hpp
 					  source/api/CCApi.hpp)
 
-add_compile_options("-Wall -Wextra -Werror -pedantic") #TODO MSVC and clang flags
-
 if (MSVC)
+    add_compile_options(/W4 /WX)
 	set_target_properties(cc-cli PROPERTIES LINK_FLAGS "/ENTRY:mainCRTStartup /SUBSYSTEM:console")
+else()
+    add_compile_options("-Wall -Wextra -Werror -pedantic")
 endif()
+
+
 set_target_properties(cc-cli PROPERTIES CMAKE_CXX_STANDARD 20)
 target_include_directories(cc-cli PRIVATE source/include)
 
