@@ -7,8 +7,6 @@ set (CC_CLI_PLATFORM "unknown")
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
-
-
 include(cmake/conan.cmake)
 
 if (UNIX)
@@ -45,7 +43,7 @@ add_executable(cc-cli source/main.cpp
 					  source/Version.hpp 
 					  source/api/CCApi.hpp)
 
-add_compile_options("-Wall -Wextra -Werror -pedantic")
+add_compile_options("-Wall -Wextra -Werror -pedantic") #TODO MSVC and clang flags
 
 if (MSVC)
 	set_target_properties(cc-cli PROPERTIES LINK_FLAGS "/ENTRY:mainCRTStartup /SUBSYSTEM:console")
