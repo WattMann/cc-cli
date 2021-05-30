@@ -31,5 +31,5 @@ C:/_dev/projects/cxx/cc-cli/build/FindOpenSSL.cmake
 C:/_dev/projects/cxx/cc-cli/build/FindZLIB.cmake
 C:/_dev/projects/cxx/cc-cli/build/Findfmt.cmake
 C:/_dev/projects/cxx/cc-cli/build/Findnlohmann_json.cmake
-C:/_dev/projects/cxx/cc-cli/cmake/conan.cmake
+C:/_dev/projects/cxx/cc-cli/build/cmake/conan.cmake
 C:/_dev/projects/cxx/cc-cli/source/Version.hpp.in

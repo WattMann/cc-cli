@@ -30,11 +30,15 @@ size_t writer(void *ptr, size_t size, size_t nmemb, std::string *data){
 [[nodiscard]]
 CURL *
 common_curl_init(const std::string &context, std::string &response) {
-	 curl_global_init(CURL_GLOBAL_WIN32);
+	#ifdef WIN32
+		curl_global_init(CURL_GLOBAL_WIN32);
+	#endif
+
     auto handle = curl_easy_init();
     if (!handle)
         throw std::runtime_error("Failed to initialize CURL handle");
 
+    curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, false);
     curl_easy_setopt(handle, CURLOPT_URL, fmt::format(CC_URL, context).c_str());
     curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, writer);
     curl_easy_setopt(handle, CURLOPT_WRITEDATA, &response);
@@ -59,7 +63,7 @@ ServerInfo
 CCApi::serverInfo(const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}", slug), response);
-  	printf("%ud\n", handle);
+
     try {
         common_curl_preform(handle);
         auto json_object = nlohmann::json::parse(response);
@@ -71,7 +75,7 @@ CCApi::serverInfo(const std::string &slug) {
                 json_object["slug"],
                 json_object["votes"].get<int>()
         };
-        printf("obj done\n");
+  
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {

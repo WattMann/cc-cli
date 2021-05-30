@@ -9,7 +9,7 @@ void displayHelp() {
                "Commands:\n"
                " info                       display server information\n"
                " votes                      display server or user votes\n"
-               " top  | topvoters            display server top voters\n"
+               " top  | topvoters           display server top voters\n"
                " next | nextvote            display next vote date\n"
                "Arguments:\n"
                " -h, --help                 display overall help or command specific help\n"

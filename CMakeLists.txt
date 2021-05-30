@@ -7,7 +7,13 @@ set (CC_CLI_PLATFORM "unknown")
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
-include(cmake/conan.cmake)
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/cmake/conan.cmake")
+   message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+   file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
+                  "${CMAKE_BINARY_DIR}/cmake/conan.cmake")
+endif()
+
+include("${CMAKE_BINARY_DIR}/cmake/conan.cmake")
 
 if (UNIX)
   if (APPLE)
@@ -22,7 +28,7 @@ else ()
 endif ()
 
 
-conan_cmake_configure(REQUIRES fmt/7.1.3 libcurl/7.77.0 nlohmann_json/3.9.1
+conan_cmake_configure(REQUIRES fmt/7.1.3 openssl/1.1.1k libcurl/7.77.0 nlohmann_json/3.9.1
                       GENERATORS cmake_find_package)
 conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .
@@ -30,10 +36,11 @@ conan_cmake_install(PATH_OR_REFERENCE .
                     REMOTE conan-center
                     SETTINGS ${settings})
 find_package(fmt)
+find_package(OpenSSL)
 find_package(CURL)
 find_package(nlohmann_json)
 
-link_libraries(fmt::fmt CURL::CURL nlohmann_json::nlohmann_json)
+link_libraries(fmt::fmt OpenSSL::OpenSSL CURL::CURL nlohmann_json::nlohmann_json)
 
 configure_file(${PROJECT_SOURCE_DIR}/source/Version.hpp.in ${PROJECT_SOURCE_DIR}/source/Version.hpp)
 include_directories(cc-cli "${PROJECT_BINARY_DIR}")

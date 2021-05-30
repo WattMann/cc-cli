@@ -10,6 +10,7 @@
     fmt/7.Y.Z
     libcurl/7.Y.Z
     nlohmann_json/3.Y.Z
+    openssl/1.Y.Z
 
 [options]
 
