@@ -1,10 +1,25 @@
 #include "CCApi.hpp"
 
+#include <time.h>
+#include <iomanip>
+#include <sstream>
+
 using namespace CCApi;
 
+extern "C" char* strptime(const char* s,
+                          const char* f,
+                          struct tm* tm) {
+    std::istringstream input(s);
+    input.imbue(std::locale(setlocale(LC_ALL, nullptr)));
+    input >> std::get_time(tm, f);
+    if (input.fail()) {
+        return nullptr;
+    }
+    return (char*)(s + input.tellg());
+}
 
 void parse_time(char* str, const char* format, std::tm& tm){
-    strptime(str, format, &tm); //TODO windows support
+    strptime(str, format, &tm);
 }
 
 size_t writer(void *ptr, size_t size, size_t nmemb, std::string *data){
