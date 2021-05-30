@@ -1,4 +1,0 @@
-C:/_dev/projects/cxx/cc-cli/build/CMakeFiles/cc-cli.dir
-C:/_dev/projects/cxx/cc-cli/build/CMakeFiles/INSTALL.dir
-C:/_dev/projects/cxx/cc-cli/build/CMakeFiles/ALL_BUILD.dir
-C:/_dev/projects/cxx/cc-cli/build/CMakeFiles/ZERO_CHECK.dir
