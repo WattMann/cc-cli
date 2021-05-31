@@ -83,11 +83,17 @@ int main(int argc, char **argv) {
             }
         }
         else if (arg == "--limit" || arg == "-l") {
+			fmt::print("{}\n", arg);
             if(index + 1 >= argc) {
                 fmt::print("Limit requires an argument\n");
                 return 0;
             }
             else {
+                if(std::string(argv[++index]) == "all") {
+                    params.limit = -2;
+                	continue;
+                }
+
                 params.limit = atoi(argv[++index]);
                 if(params.limit == 0) {
                     fmt::print("Bad value for parameter limit\n");
@@ -122,18 +128,23 @@ int main(int argc, char **argv) {
                 fmt::print("Required parameters: slug\n"
                            "Optional parameters: username, limit\n");
             else if(params.username == "N/S") { // server votes
-                auto voteinfo = CCApi::serverVotes(params.slug);
-                fmt::print("Total vote count: {}\n", voteinfo.vote_count);
+                CCApi::VoteVector voteInfo;
+                if(params.month > 0 && params.year > 0)
+                    voteInfo = CCApi::serverVotes(params.slug, params.month, params.year);
+                else
+                    voteInfo = CCApi::serverVotes(params.slug);
+
+                fmt::print("Total vote count: {}\n", voteInfo.vote_count);
 
                 if (params.limit == -1)
                     params.limit = 100;
 
-                if(params.limit > voteinfo.votes.size())
-                    params.limit = voteinfo.votes.size();
+                if(params.limit > voteInfo.votes.size() || params.limit == -2)
+                    params.limit = voteInfo.votes.size();
 
                 char buffer[32] = {0};
                 int index = 0;
-                for (const auto &item : voteinfo.votes) {
+                for (const auto &item : voteInfo.votes) {
                     if(index++ >= params.limit)
                         break;
                     std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
@@ -145,7 +156,7 @@ int main(int argc, char **argv) {
                 auto profile = CCApi::userVotes(params.username, params.slug);
                 if (params.limit == -1)
                     params.limit = 10;
-                if(params.limit > profile.votes.size())
+                if(params.limit > profile.votes.size() || params.limit == -2)
                     params.limit = profile.votes.size();
 
                 if(profile.votes.empty()) {
@@ -181,7 +192,7 @@ int main(int argc, char **argv) {
                 if (params.limit == -1)
                     params.limit = 100;
 
-                if(params.limit > topvoters.size())
+                if(params.limit > topvoters.size() || params.limit == -2)
                     params.limit = topvoters.size();
 
                 int index = 0;

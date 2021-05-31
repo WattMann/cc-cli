@@ -17,34 +17,51 @@ namespace CCApi {
     constexpr const char *TIME_FORMAT = "%Y-%m-%d %H:%M:%S";
 
     struct ServerInfo {
-        const std::string address;
-        const std::string name;
-        const int position;
-        const std::string slug;
-        const int votes;
+        ServerInfo() : address("N/S"), name("N/S"), position(-1), slug("N/S"), votes(0) {}
+        ServerInfo(const std::string &address, const std::string &name, const int position, const std::string &slug,
+                   const int votes) : address(address), name(name), position(position), slug(slug), votes(votes) {}
+
+        std::string address;
+        std::string name;
+        int position;
+        std::string slug;
+        int votes;
     };
 
     struct VoterInfo {
-        const std::string username;
-        const int vote_count;
+        VoterInfo() : username("N/S"), vote_count(0) {}
+        VoterInfo(const std::string &username, const int voteCount) : username(username), vote_count(voteCount) {}
+
+        std::string username;
+        int vote_count;
     };
 
     struct Vote {
-        const std::string username;
-        const std::tm date;
-        const bool delivered;
+        Vote() : username("N/S"), date(), delivered(false) {}
+        Vote(const std::string &username, const tm &date, const bool delivered) : username(username), date(date), delivered(delivered) {}
+
+        std::string username;
+        std::tm date;
+        bool delivered;
     };
 
     struct VoteVector {
+        VoteVector() : votes(), vote_count(0) {};
+        VoteVector(const std::list<Vote> &votes, const int voteCount) : votes(votes), vote_count(voteCount) {}
+
         std::list<Vote> votes;
-        const int vote_count;
+        int vote_count;
     };
 
     struct PlayerInfo {
-        const std::string username;
-        const std::tm next_vote;
-        const int vote_count;
-        const std::list<Vote> votes;
+        PlayerInfo() : username("N/S"), next_vote(), vote_count(0), votes() {}
+        PlayerInfo(const std::string &username, const tm &nextVote, const int voteCount, const std::list<Vote> &votes)
+        : username(username), next_vote(nextVote), vote_count(voteCount), votes(votes) {}
+
+        std::string username;
+        std::tm next_vote;
+        int vote_count;
+        std::list<Vote> votes;
     };
 
     /**

@@ -67,7 +67,7 @@ CCApi::serverInfo(const std::string &slug) {
     try {
         common_curl_preform(handle);
         auto json_object = nlohmann::json::parse(response);
-        
+
         ServerInfo info{
                 json_object["address"],
                 json_object["name"],
@@ -75,7 +75,7 @@ CCApi::serverInfo(const std::string &slug) {
                 json_object["slug"],
                 json_object["votes"].get<int>()
         };
-  
+
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {
@@ -135,7 +135,7 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
             });
         }
 
-        VoteVector vector{
+        VoteVector vector {
                 votes,
                 obj["vote_count"].get<int>()
         };
@@ -200,7 +200,7 @@ CCApi::userVotes(const std::string &username, const std::string &slug) {
                 obj["vote_count"].get<int>(),
                 votes
         };
-        
+
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {
@@ -256,10 +256,10 @@ CCApi::nextVote(const std::string &username, const std::string &slug) {
         std::tm tm {};
         parse_time((char*)obj["next_vote"].get<std::string>().c_str(), TIME_FORMAT, tm);
 
-        PlayerInfo info {
-                obj["username"],
-                tm
-        };
+        PlayerInfo info;
+        info.username = obj["username"];
+        info.next_vote = tm;
+
         curl_easy_cleanup(handle);
         return info;
     } catch (...) {

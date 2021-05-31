@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(cc-cli)
 
 set (CC_CLI_VERSION_MAJOR 2)
-set (CC_CLI_VERSION_MINOR 0)
+set (CC_CLI_VERSION_MINOR 1)
 set (CC_CLI_PLATFORM "unknown")
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -62,4 +62,3 @@ set_target_properties(cc-cli PROPERTIES CMAKE_CXX_STANDARD 20)
 target_include_directories(cc-cli PRIVATE source/include)
 
 install(TARGETS cc-cli DESTINATION bin)
-
