@@ -16,7 +16,8 @@ void displayHelp() {
                " -s, --slug [slug]          specify server slug\n"
                " -u, --username [username]  specify player username\n"
                " -y, --year [year]          specify year span\n"
-               " -m, --month [year]         specify month span\n",
+               " -m, --month [month]        specify month span\n"
+			   " -l, --limit [number|all]   specify limit\n",
                CC_CLI_VERSION_MAJOR, CC_CLI_VERSION_MINOR
     );
 }

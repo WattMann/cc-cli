@@ -20,7 +20,8 @@ Arguments:
  -s, --slug [slug]          specify server slug
  -u, --username [username]  specify player username
  -y, --year [year]          specify year span
- -m, --month [year]         specify month span
+ -m, --month [month]        specify month span
+ -l, --limit [number|all]   specify limit
 ```
 
 ## Dependencies
