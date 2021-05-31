@@ -84,7 +84,6 @@ int main(int argc, char **argv) {
             }
         }
         else if (arg == "--limit" || arg == "-l") {
-			fmt::print("{}\n", arg);
             if(index + 1 >= argc) {
                 fmt::print("Limit requires an argument\n");
                 return 0;
