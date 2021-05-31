@@ -17,7 +17,7 @@ void displayHelp() {
                " -u, --username [username]  specify player username\n"
                " -y, --year [year]          specify year span\n"
                " -m, --month [month]        specify month span\n"
-			   " -l, --limit [number|all]   specify limit\n",
+               " -l, --limit [number|all]   specify limit\n",
                CC_CLI_VERSION_MAJOR, CC_CLI_VERSION_MINOR
     );
 }
@@ -91,7 +91,7 @@ int main(int argc, char **argv) {
             else {
                 if(std::string(argv[++index]) == "all") {
                     params.limit = -2;
-                	continue;
+                    continue;
                 }
 
                 params.limit = atoi(argv[++index]);
