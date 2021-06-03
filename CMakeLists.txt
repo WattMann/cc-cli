@@ -51,10 +51,13 @@ add_executable(cc-cli source/main.cpp
 					  source/api/CCApi.hpp)
 
 if (MSVC)
-    add_compile_options(/W4 /WX)
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall /permissive-")
+	
 	set_target_properties(cc-cli PROPERTIES LINK_FLAGS "/ENTRY:mainCRTStartup /SUBSYSTEM:console")
 else()
-    add_compile_options("-Wall -Wextra -Werror -pedantic")
+    add_compile_options("-Wall -Wextra -Werror -Wpedantic")
 endif()
 
 
