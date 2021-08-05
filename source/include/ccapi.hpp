@@ -11,7 +11,7 @@
 #include <fmt/format.h>
 #include <curl/curl.h>
 
-namespace CCApi {
+namespace ccapi {
 
     constexpr const char *CC_URL = "https://czech-craft.eu/api/{}";
     constexpr const char *TIME_FORMAT = "%Y-%m-%d %H:%M:%S";

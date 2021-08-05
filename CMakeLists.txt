@@ -42,13 +42,13 @@ find_package(nlohmann_json)
 
 link_libraries(fmt::fmt OpenSSL::OpenSSL CURL::CURL nlohmann_json::nlohmann_json)
 
-configure_file(${PROJECT_SOURCE_DIR}/source/Version.hpp.in ${PROJECT_SOURCE_DIR}/source/Version.hpp)
+configure_file(source/include/version.hpp.in source/include/version.hpp)
 include_directories(cc-cli "${PROJECT_BINARY_DIR}")
 
 add_executable(cc-cli source/main.cpp
-					  source/api/CCApi.cpp
-					  source/Version.hpp
-					  source/api/CCApi.hpp)
+        source/ccapi.cpp
+        source/include/version.hpp
+        source/include/ccapi.hpp)
 
 if (MSVC)
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")

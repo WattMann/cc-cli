@@ -1,10 +1,10 @@
-#include "CCApi.hpp"
+#include "ccapi.hpp"
 
 #include <ctime>
 #include <iomanip>
 #include <sstream>
 
-using namespace CCApi;
+using namespace ccapi;
 
 extern "C" char* strptime(const char* s,
                           const char* f,
@@ -60,7 +60,7 @@ common_curl_preform(CURL *handle) {
 }
 
 ServerInfo
-CCApi::serverInfo(const std::string &slug) {
+ccapi::serverInfo(const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}", slug), response);
 
@@ -85,7 +85,7 @@ CCApi::serverInfo(const std::string &slug) {
 }
 
 VoteVector
-CCApi::serverVotes(const std::string &slug) {
+ccapi::serverVotes(const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}/votes", slug), response);;
     try {
@@ -115,7 +115,7 @@ CCApi::serverVotes(const std::string &slug) {
 }
 
 VoteVector
-CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
+ccapi::serverVotes(const std::string &slug, const int &month, const int &year) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}/votes/{}/{}", slug, year, month), response);;
     try {
@@ -149,7 +149,7 @@ CCApi::serverVotes(const std::string &slug, const int &month, const int &year) {
 }
 
 std::list<VoterInfo>
-CCApi::topVoters(const std::string &slug) {
+ccapi::topVoters(const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}/voters", slug), response);;
     try {
@@ -172,7 +172,7 @@ CCApi::topVoters(const std::string &slug) {
 }
 
 PlayerInfo
-CCApi::userVotes(const std::string &username, const std::string &slug) {
+ccapi::userVotes(const std::string &username, const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}/player/{}", slug, username), response);;
     try {
@@ -210,7 +210,7 @@ CCApi::userVotes(const std::string &username, const std::string &slug) {
 }
 
 PlayerInfo
-CCApi::userVotes(const std::string &username, const std::string &slug, const int &month, const int &year) {
+ccapi::userVotes(const std::string &username, const std::string &slug, const int &month, const int &year) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}/player/{}/{}/{}", slug, username, year, month), response);
     try {
@@ -246,7 +246,7 @@ CCApi::userVotes(const std::string &username, const std::string &slug, const int
 }
 
 PlayerInfo
-CCApi::nextVote(const std::string &username, const std::string &slug) {
+ccapi::nextVote(const std::string &username, const std::string &slug) {
     std::string response;
     auto handle = common_curl_init(fmt::format("server/{}/player/{}/next_vote", slug, username), response);
     try {

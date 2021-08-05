@@ -1,5 +1,5 @@
-#include "api/CCApi.hpp"
-#include "Version.hpp"
+#include "ccapi.hpp"
+#include "version.hpp"
 #include <fmt/format.h>
 #include <chrono>
 
@@ -22,8 +22,6 @@ void displayHelp() {
     );
 }
 
-//  1    2     3   4
-// exec arg0 arg1 args2
 int main(int argc, char **argv) {
     if(argc < 2) {
         displayHelp();
@@ -115,7 +113,7 @@ int main(int argc, char **argv) {
             if(params.slug == "N/S" || params.help)
                 fmt::print("Required parameters: slug\n");
             else {
-                auto info = CCApi::serverInfo(params.slug);
+                auto info = ccapi::serverInfo(params.slug);
                 fmt::print("Name: {}\nAddress: {}\nPosition: {}\nVotes: {}\n", info.name, info.address, info.position,
                            info.votes);
 
@@ -128,11 +126,11 @@ int main(int argc, char **argv) {
                 fmt::print("Required parameters: slug\n"
                            "Optional parameters: username, limit\n");
             else if(params.username == "N/S") { // server votes
-                CCApi::VoteVector voteInfo;
+                ccapi::VoteVector voteInfo;
                 if(params.month > 0 && params.year > 0)
-                    voteInfo = CCApi::serverVotes(params.slug, params.month, params.year);
+                    voteInfo = ccapi::serverVotes(params.slug, params.month, params.year);
                 else
-                    voteInfo = CCApi::serverVotes(params.slug);
+                    voteInfo = ccapi::serverVotes(params.slug);
 
                 fmt::print("Total vote count: {}\n", voteInfo.vote_count);
 
@@ -147,13 +145,13 @@ int main(int argc, char **argv) {
                 for (const auto &item : voteInfo.votes) {
                     if(index++ >= params.limit)
                         break;
-                    std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
+                    std::strftime(buffer, 32, ccapi::TIME_FORMAT, &item.date);
                     fmt::print(" |{}| {} - {}\n", std::string(buffer), item.username,
                                item.delivered ? "Delivered" : "Not delivered");
                 }
                 return 0;
             } else { // player votes
-                auto profile = CCApi::userVotes(params.username, params.slug);
+                auto profile = ccapi::userVotes(params.username, params.slug);
                 if (params.limit == -1)
                     params.limit = 10;
                 if(params.limit > profile.votes.size() || params.limit == -2)
@@ -165,7 +163,7 @@ int main(int argc, char **argv) {
                 }
 
                 char buffer[32] = {0};
-                std::strftime(buffer, 32, CCApi::TIME_FORMAT, &profile.next_vote);
+                std::strftime(buffer, 32, ccapi::TIME_FORMAT, &profile.next_vote);
                 fmt::print("Vote count: {}\n"
                            "Next vote: {}\n"
                            "Votes:\n", profile.vote_count, std::string(buffer));
@@ -174,7 +172,7 @@ int main(int argc, char **argv) {
                 for (const auto &item : profile.votes) {
                     if(index++ >= params.limit)
                         break;
-                    std::strftime(buffer, 32, CCApi::TIME_FORMAT, &item.date);
+                    std::strftime(buffer, 32, ccapi::TIME_FORMAT, &item.date);
                     fmt::print(" |{}| - {}\n", std::string(buffer), item.delivered ? "Delivered" : "Not delivered");
                 }
             }
@@ -186,7 +184,7 @@ int main(int argc, char **argv) {
                 fmt::print("Required parameters: slug\n"
                            "Optional parameters: limit\n");
             else {
-                auto topvoters = CCApi::topVoters(params.slug);
+                auto topvoters = ccapi::topVoters(params.slug);
                 fmt::print("Total vote count: {}\n", topvoters.size());
 
                 if (params.limit == -1)
@@ -209,9 +207,9 @@ int main(int argc, char **argv) {
             if(params.slug == "N/S" || params.username == "N/S" || params.help)
                 fmt::print("Required parameters: slug, username\n");
             else {
-                auto info = CCApi::nextVote(params.username, params.slug);
+                auto info = ccapi::nextVote(params.username, params.slug);
                 char buffer[32] = {0};
-                std::strftime(buffer, 32, CCApi::TIME_FORMAT, &info.next_vote);
+                std::strftime(buffer, 32, ccapi::TIME_FORMAT, &info.next_vote);
                 fmt::print("Next vote: {}\n", std::string(buffer));
             }
             return 0;
